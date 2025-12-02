@@ -1,0 +1,96 @@
+@*
+@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Create Book View</h2>
+*@
+
+
+@model Practice_Project.Models.Book  
+
+@{
+    ViewData["Title"] = "Add New Book";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">
+        <i class="bi bi-book-fill"></i> Add New Book
+    </h2>
+
+    <div class="row">
+        <div class="col-md-8 col-lg-6">
+
+            <form asp-action="Create" method="post" class="bg-light p-4 rounded shadow">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-bold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter book title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- ISBN -->
+                <div class="mb-3">
+                    <label asp-for="ISBN" class="form-label fw-bold"></label>
+                    <input asp-for="ISBN" class="form-control" placeholder="e.g. 9783161484100" />
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+
+                <!-- Author Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="AuthorId" class="form-label fw-bold">Author</label>
+                    <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.Authors"></select>
+                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="CategoryId" class="form-label fw-bold">Category</label>
+                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <!-- Publication Year -->
+                <div class="mb-3">
+                    <label asp-for="PublicationYear" class="form-label fw-bold">Publication Year</label>
+                    <input asp-for="PublicationYear" type="number" class="form-control" min="1000" max="2100" />
+                    <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                </div>
+
+                <!-- Total Quantity -->
+                <div class="mb-3">
+                    <label asp-for="TotalQuantity" class="form-label fw-bold">Total Copies</label>
+                    <input asp-for="TotalQuantity" type="number" class="form-control" min="1" value="1" />
+                    <span asp-validation-for="TotalQuantity" class="text-danger"></span>
+                </div>
+
+                <!-- Available Quantity -->
+                <div class="mb-3">
+                    <label asp-for="QuantityAvailable" class="form-label fw-bold">Available Copies</label>
+                    <input asp-for="QuantityAvailable" type="number" class="form-control" min="0" />
+                    <small class="text-muted">Usually same as Total Copies when adding new book</small>
+                </div>
+
+                <hr />
+
+                <div class="d-flex gap-3">
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    <button type="submit" class="btn btn-success btn-lg">
+                        Save Book
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include validation scripts -->
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
