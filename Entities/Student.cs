@@ -1,12 +1,12 @@
-// Entities/Student.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace Practice_Project.Entities
 {
     public class Student
     {
+        // CHANGED: StudentId → Id (only this line changed)
         [Key]
-        public int StudentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -26,8 +26,7 @@ namespace Practice_Project.Entities
 
         public bool IsActive { get; set; } = true;
 
-        // One student → many book issues
-   
+        // One student → many book issues (already perfect)
         public virtual ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();
     }
 }

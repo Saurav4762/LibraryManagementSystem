@@ -1,77 +1,74 @@
-
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Practice_Project.Entities;
 using Practice_Project.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Practice_Project.Data;
-using Practice_Project.Entities;
 
 namespace Practice_Project.Controllers
 {
     public class BookIssueController : Controller
     {
-        // 1. DbContext is injected - this gives access to the database
-        private readonly LibraryDbContext _context;   // Replace ApplicationDbContext with your actual DbContext name
+        private readonly LibraryDbContext _context;
 
-        // 2. Constructor - Dependency Injection provides the DbContext
         public BookIssueController(LibraryDbContext context)
         {
             _context = context;
         }
 
-        // 3. GET: /BookIssue/ - Shows list of all issued books
+        // GET: /BookIssue/
         public async Task<IActionResult> Index()
         {
-            // Load BookIssue records along with related Book and Student data
             var issues = await _context.BookIssues
-                .Include(bi => bi.Book)      // Load Book details
-                .Include(bi => bi.Student)   // Load Student details
+                .Include(bi => bi.Book)
+                .Include(bi => bi.Student)
                 .ToListAsync();
 
-            return View(issues);   // Pass the list to Index.cshtml view
+            return View(issues);
         }
 
-        // 4. GET: /BookIssue/Create - Shows form to issue a new book
+        // GET: /BookIssue/Create - Show form
         public IActionResult Create()
         {
-            // Load books and students for dropdowns in the view
-            ViewBag.Books = _context.Books.ToList();          // Assuming you have DbSet<BookViewModel> Books
-            ViewBag.Students = _context.Students.ToList();    // Assuming you have DbSet<StudentVm> Students
+            ViewBag.Books = _context.Books?.ToList() ?? new List<Book>();
+            ViewBag.Students = _context.Students?.ToList() ?? new List<Student>();
 
-            return View();
+            return View(new BookIssueViewModel()); // Pass ViewModel
         }
 
-        // 5. POST: /BookIssue/Create - Handles form submission to issue a book
+        // POST: /BookIssue/Create - Save
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BookIssue issue)
+        public async Task<IActionResult> Create(BookIssueViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // Set default values if not provided
-                issue.IssueDate = DateTime.Now;
-                issue.Status = "Issued";
-                issue.FineAmount = 0;
-
-                // Calculate DueDate - here assuming 14 days
-                issue.DueDate = DateTime.Now.AddDays(14);
+                var issue = new BookIssue
+                {
+                    BookId = vm.BookId,
+                    StudentId = vm.StudentId,
+                    IssueDate = DateTime.Now,
+                    DueDate = DateTime.Now.AddDays(14),
+                    Status = "Issued",
+                    FineAmount = 0
+                };
 
                 _context.BookIssues.Add(issue);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));  // Redirect to list after success
+                return RedirectToAction(nameof(Index));
             }
 
-            // If validation fails, reload dropdowns and show form again
-            ViewBag.Books = _context.Books.ToList();
-            ViewBag.Students = _context.Students.ToList();
-            return View(issue);
+            // Validation failed – reload dropdowns and return ViewModel
+            ViewBag.Books = _context.Books?.ToList() ?? new List<Book>();
+            ViewBag.Students = _context.Students?.ToList() ?? new List<Student>();
+
+            return View(vm); // ← Must be vm (ViewModel), not entity
         }
 
-        // 6. GET: /BookIssue/Return/5 - Shows return page for a specific issue
+        // GET: /BookIssue/Return/5
         public async Task<IActionResult> Return(int id)
         {
             var issue = await _context.BookIssues
@@ -85,7 +82,7 @@ namespace Practice_Project.Controllers
             return View(issue);
         }
 
-        // 7. POST: /BookIssue/Return/5 - Processes the return of a book
+        // POST: /BookIssue/Return/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Return(int id, BookIssue model)
@@ -94,15 +91,13 @@ namespace Practice_Project.Controllers
             if (issue == null)
                 return NotFound();
 
-            // Mark as returned
             issue.ReturnDate = DateTime.Now;
             issue.Status = "Returned";
 
-            // Simple fine calculation: $1 per day after DueDate
             if (issue.ReturnDate > issue.DueDate)
             {
                 int overdueDays = (issue.ReturnDate.Value - issue.DueDate).Days;
-                issue.FineAmount = overdueDays * 1.00m;  // 1 dollar per day
+                issue.FineAmount = overdueDays * 1.00m;
             }
 
             await _context.SaveChangesAsync();

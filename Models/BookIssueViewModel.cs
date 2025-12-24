@@ -7,8 +7,9 @@ public class BookIssueViewModel
     [Key]
     public int Id { get; set; }
     
+    [Required(ErrorMessage = "Please select a book")]
     public int BookId { get; set; }
-    
+    [Required(ErrorMessage = "Please select a book")]
     public int StudentId { get; set; }
     
     public DateTime IssueDate { get; set; } = DateTime.Now;

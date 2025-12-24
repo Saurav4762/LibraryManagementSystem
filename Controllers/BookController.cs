@@ -22,6 +22,8 @@ namespace Practice_Project.Controllers
                 .OrderBy(b => b.Title)
                 .ToListAsync();
 
+            
+            
             return View(books);
         }
 
@@ -75,7 +77,7 @@ public async Task<IActionResult> Edit(int? id)
 
     var model = new BookViewModel
     {
-        BookId = book.BookId,
+        BookId = book.Id,
         Title = book.Title,
         ISBN = book.ISBN,
         PublicationYear = book.PublicationYear,
@@ -158,7 +160,7 @@ private async Task LoadDropdownsAsync(BookViewModel model)
             var book = await _context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Category)
-                .FirstOrDefaultAsync(b => b.BookId == id);
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (book == null) return NotFound();
             return View(book);
@@ -190,7 +192,7 @@ private async Task LoadDropdownsAsync(BookViewModel model)
 
         private bool BookExits(int id)
         {
-            return _context.Books.Any(e => e.BookId == id);
+            return _context.Books.Any(e => e.Id == id);
         }
     }
 }

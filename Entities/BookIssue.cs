@@ -7,7 +7,11 @@ namespace Practice_Project.Entities
         [Key]
         public int Id { get; set; }
 
+        // ADD [Required] HERE
+        [Required(ErrorMessage = "Please select a book")]
         public int BookId { get; set; }
+
+        [Required(ErrorMessage = "Please select a student")]
         public int StudentId { get; set; }
 
         public DateTime IssueDate { get; set; }
@@ -17,7 +21,6 @@ namespace Practice_Project.Entities
         public string Status { get; set; } = "Issued";
         public decimal FineAmount { get; set; } = 0;
 
-        // These two navigation properties ARE REQUIRED for .Include() to work
         public virtual Book Book { get; set; } = null!;
         public virtual Student Student { get; set; } = null!;
     }

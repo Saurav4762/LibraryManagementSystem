@@ -1,13 +1,12 @@
-// Entities/Book.cs → FIXED
-
 using System.ComponentModel.DataAnnotations;
 
 namespace Practice_Project.Entities
 {
     public class Book
     {
+        // CHANGED: BookId → Id (this is the only fix needed)
         [Key]
-        public int BookId { get; set; }
+        public int Id { get; set; }
 
         [Required][StringLength(100)]
         public string Title { get; set; } = string.Empty;
@@ -30,10 +29,13 @@ namespace Practice_Project.Entities
         public bool IsActive { get; set; } = true;
 
         // Foreign Keys
-        [Required] public int AuthorId { get; set; }
-        [Required] public int CategoryId { get; set; }
+        [Required] 
+        public int AuthorId { get; set; }
 
-        // Correct Navigation to Entities
+        [Required] 
+        public int CategoryId { get; set; }
+
+        // Navigation properties (already perfect)
         public virtual Author Author { get; set; } = null!;
         public virtual Category Category { get; set; } = null!;
         public virtual ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();

@@ -39,7 +39,7 @@
                     @foreach (var book in Model)
                     {
                         <tr>
-                            <td>@book.BookId</td>
+                            <td>@book.Id</td>
                             <td><strong>@book.Title</strong></td>
                             <td>@book.Author.Name</td>
                             <td><span class="badge bg-secondary">@book.Category.Name</span></td>
@@ -62,8 +62,8 @@
                                 }
                             </td>
                             <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@book.BookId" class="btn btn-warning btn-sm">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@book.BookId" class="btn btn-danger btn-sm">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                     }

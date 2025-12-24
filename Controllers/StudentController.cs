@@ -68,7 +68,7 @@ public class StudentController : Controller
 
         var model = new StudentVm
         {
-            StudentId = student.StudentId,
+            StudentId = student.Id,
             Name = student.Name,
             Email = student.Email,
             RollNumber = student.RollNumber,
@@ -118,7 +118,7 @@ public class StudentController : Controller
         }
 
         var student = await _context.Students
-            .FirstOrDefaultAsync(s => s.StudentId == id);
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (student == null)
         {
@@ -144,6 +144,6 @@ public class StudentController : Controller
 
     private bool StudentExists(int id)
     {
-        return _context.Students.Any(e => e.StudentId == id);
+        return _context.Students.Any(e => e.Id == id);
     }
 }
