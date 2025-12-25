@@ -12,8 +12,8 @@ using Practice_Project.Data;
 namespace Practice_Project.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20251210170621_FinalCleanup")]
-    partial class FinalCleanup
+    [Migration("20251225100104_initialcreate")]
+    partial class initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,9 +39,6 @@ namespace Practice_Project.Migrations
                     b.Property<int>("BookIssueId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("BookIssueId1")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("GeneratedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -54,9 +51,6 @@ namespace Practice_Project.Migrations
                     b.HasKey("FineId");
 
                     b.HasIndex("BookIssueId");
-
-                    b.HasIndex("BookIssueId1")
-                        .IsUnique();
 
                     b.ToTable("Fines");
                 });
@@ -84,11 +78,11 @@ namespace Practice_Project.Migrations
 
             modelBuilder.Entity("Practice_Project.Entities.Book", b =>
                 {
-                    b.Property<int>("BookId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
@@ -121,7 +115,7 @@ namespace Practice_Project.Migrations
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("BookId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
@@ -145,7 +139,7 @@ namespace Practice_Project.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("FineAmount")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("timestamp with time zone");
@@ -155,8 +149,7 @@ namespace Practice_Project.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("text");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
@@ -193,11 +186,11 @@ namespace Practice_Project.Migrations
 
             modelBuilder.Entity("Practice_Project.Entities.Student", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -220,7 +213,7 @@ namespace Practice_Project.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.HasKey("StudentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Students");
                 });
@@ -232,10 +225,6 @@ namespace Practice_Project.Migrations
                         .HasForeignKey("BookIssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Practice_Project.Entities.BookIssue", null)
-                        .WithOne("Fine")
-                        .HasForeignKey("Fine", "BookIssueId1");
 
                     b.Navigation("BookIssue");
                 });
@@ -286,11 +275,6 @@ namespace Practice_Project.Migrations
             modelBuilder.Entity("Practice_Project.Entities.Book", b =>
                 {
                     b.Navigation("BookIssues");
-                });
-
-            modelBuilder.Entity("Practice_Project.Entities.BookIssue", b =>
-                {
-                    b.Navigation("Fine");
                 });
 
             modelBuilder.Entity("Practice_Project.Entities.Category", b =>

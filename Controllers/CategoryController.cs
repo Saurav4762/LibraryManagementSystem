@@ -7,7 +7,7 @@ using Practice_Project.Models;
 
 namespace Practice_Project.Controllers
 {
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseController
     {
         private readonly LibraryDbContext _context;
 

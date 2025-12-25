@@ -5,7 +5,7 @@
 namespace Practice_Project.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalCleanup : Migration
+    public partial class finalupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

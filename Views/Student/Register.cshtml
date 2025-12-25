@@ -1,0 +1,118 @@
+@model Practice_Project.Models.StudentVm
+
+@{
+    ViewData["Title"] = "Register Student";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Register New Student</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Semester</label>
+                            <select asp-for="Semester" class="form-control">
+                                <option value="">-- Select Semester --</option>
+                                <option>1st</option>
+                                <option>2nd</option>
+                                <option>3rd</option>
+                                <option>4th</option>
+                                <option>5th</option>
+                                <option>6th</option>
+                                <option>7th</option>
+                                <option>8th</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Section</label>
+                            <select asp-for="Semester" class="form-control">
+                                <option value="">-- Select Section --</option>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>C</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Semester" class="control-label"></label>
+                        <input asp-for="Semester" class="form-control" />
+                        <span asp-validation-for="Semester" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Semester" class="form-label"></label>
+                        <select asp-for="Semester" class="form-control">
+                            <option value="">-- Select Semester --</option>
+                            @foreach (var semester in Practice_Project.Models.Constants.Semesters)
+                            {
+                                <option value="@semester">@semester Semester</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Semester" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="RollNumber" class="control-label"></label>
+                        <input asp-for="RollNumber" class="form-control" />
+                        <span asp-validation-for="RollNumber" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <small class="form-text text-muted">Leave empty to auto-generate password</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="ConfirmPassword" class="control-label"></label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-check mb-3">
+                        <input class="form-check-input" asp-for="IsActive" />
+                        <label class="form-check-label" asp-for="IsActive"></label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,15 +1,19 @@
 
     
 // Controllers/AuthorsController.cs
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Practice_Project.Data;
 using Practice_Project.Entities;
+using Practice_Project.Filters;
 using Practice_Project.Models;
 
 namespace Practice_Project.Controllers
 {
-    public class AuthorsController : Controller
+    [StaffOnly]
+    public class AuthorsController : BaseController
     {
         private readonly LibraryDbContext _context;
 

@@ -1,0 +1,74 @@
+@model Practice_Project.Models.StudentVm
+
+@{
+    ViewData["Title"] = "Registration Successful";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4>Student Registration Successful</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <h5>Student registered successfully!</h5>
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Student Credentials</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> @Model.Name</p>
+                                <p><strong>Email:</strong> @Model.Email</p>
+                                <p><strong>Roll Number:</strong> @Model.RollNumber</p>
+                                <p><strong>Semester:</strong>@Model.Semester</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Login ID:</strong> <code>@Model.GeneratedStudentId</code></p>
+                                @if (ViewBag.DefaultPassword != null)
+                                {
+                                    <p><strong>Password:</strong> <code>@ViewBag.DefaultPassword</code></p>
+                                    <div class="alert alert-warning">
+                                        <strong>Important:</strong> Please save this password. It cannot be retrieved later.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p><strong>Password:</strong> (As set during registration)</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a asp-action="Create" class="btn btn-primary">Register Another Student</a>
+                    <a asp-action="Index" class="btn btn-secondary">View All Students</a>
+                    <button onclick="printCredentials()" class="btn btn-info">Print Credentials</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printCredentials() {
+        window.print();
+    }
+</script>
+
+<style>
+    @@media print {
+        .card-header.bg-success {
+            background-color: #28a745 !important;
+            -webkit-print-color-adjust: exact;
+        }
+        .btn {
+            display: none !important;
+        }
+    }
+</style>

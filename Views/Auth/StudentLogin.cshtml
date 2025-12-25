@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Student Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Student Login</h4>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                
+                <form method="post">
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="text" name="studentId" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Login</button>
+                </form>
+                
+                <hr />
+                <div class="text-center">
+                    <a href="@Url.Action("Login")" class="btn btn-secondary">Staff Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

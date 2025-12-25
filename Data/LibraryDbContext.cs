@@ -1,6 +1,7 @@
 // Data/LibraryDbContext.cs
 using Microsoft.EntityFrameworkCore;
-using Practice_Project.Entities; // ← Use Entities, not Models!
+using Practice_Project.Entities;
+using Practice_Project.Models; // ← Use Entities, not Models!
 
 namespace Practice_Project.Data;
 
@@ -16,7 +17,10 @@ public class LibraryDbContext : DbContext
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Student> Students { get; set; } = null!;
     public DbSet<BookIssue> BookIssues { get; set; } = null!;
+    
     public DbSet<Fine> Fines { get; set; } = null!;
+    
+    public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,5 +44,19 @@ public class LibraryDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
+            
+        // Configure User entity
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+                
+        // Configure Student entity
+        modelBuilder.Entity<Student>()
+            .HasIndex(s => s.Email)
+            .IsUnique();
+                
+        modelBuilder.Entity<Student>()
+            .HasIndex(s => s.StudentId)
+            .IsUnique();
     }
 }

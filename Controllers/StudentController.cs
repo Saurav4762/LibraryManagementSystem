@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using Practice_Project.Models;
 
 namespace Practice_Project.Controllers;
 
-public class StudentController : Controller
+public class StudentController : BaseController
 {
     private readonly LibraryDbContext _context;
 
@@ -15,10 +16,43 @@ public class StudentController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var students = await _context.Students
-            .OrderBy(s => s.Name)
-            .ToListAsync();
-        return View(students);
+        try
+        {
+            var students = await _context.Students
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+        
+            //convert to ViewModel
+            var studentsVms = students.Select(s=> new StudentVm
+            {
+                StudentId = s.StudentId,
+                Name = s.Name,
+                Email = s.Email,
+                Phone = s.Phone,
+                RollNumber = s.RollNumber,
+                Semester = s.Semester,
+                GeneratedStudentId = s.LoginId,
+                IsActive = s.IsActive
+            }).ToList();
+
+            if (!students.Any())
+            {
+                ViewBag.Message = "No students found. Register a new student.";
+            }
+            
+            return View(studentsVms);
+
+        }
+        catch (Exception e)
+        {
+            //Log Error
+            Console.WriteLine($"Error in student Index: {e.Message}");
+            
+            //Return empty list instead of null 
+            ViewBag.Message = "Error Loading students. Please try again.";
+            return View(new List<StudentVm>());
+        }
+        
     }
   
 
@@ -32,6 +66,7 @@ public class StudentController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
 
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Create(StudentVm model)
     {
         if (ModelState.IsValid)
@@ -42,6 +77,7 @@ public class StudentController : Controller
                 Email = model.Email,
                 Phone = model.Phone,
                 RollNumber = model.RollNumber,
+                Semester = model.Semester,
                 IsActive = model.IsActive,
             };
             _context.Students.Add(student);
@@ -52,7 +88,8 @@ public class StudentController : Controller
         return View(model);
     }
     
-    //Get Student for Edit
+    //Get Student for Edit\5
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -68,10 +105,11 @@ public class StudentController : Controller
 
         var model = new StudentVm
         {
-            StudentId = student.Id,
+            StudentId = student.StudentId,
             Name = student.Name,
             Email = student.Email,
             RollNumber = student.RollNumber,
+            Semester = student.Semester,
             IsActive = student.IsActive
         };
         return View(model);
@@ -80,6 +118,7 @@ public class StudentController : Controller
     //Post the change data Edit
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Edit(int id, StudentVm model)
     {
         if (id != model.StudentId)
@@ -94,12 +133,15 @@ public class StudentController : Controller
             {
                 return NotFound();
             }
+            
             student.Name = model.Name;
             student.Email = model.Email;
             student.Phone = model.Phone;
             student.RollNumber = model.RollNumber;
+            student.Semester = model.Semester;
             student.IsActive = model.IsActive;  
             
+            _context.Update(student);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
@@ -118,7 +160,7 @@ public class StudentController : Controller
         }
 
         var student = await _context.Students
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.StudentId == id);
 
         if (student == null)
         {
@@ -131,6 +173,7 @@ public class StudentController : Controller
     //Post for Delete 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var student = await _context.Students.FindAsync(id);
@@ -144,6 +187,6 @@ public class StudentController : Controller
 
     private bool StudentExists(int id)
     {
-        return _context.Students.Any(e => e.Id == id);
+        return _context.Students.Any(e => e.StudentId == id);
     }
 }

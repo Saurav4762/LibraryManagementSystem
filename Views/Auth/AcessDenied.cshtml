@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="text-center">
+    <h1 class="text-danger">Access Denied</h1>
+    <h2 class="text-danger">You don't have permission to access this page.</h2>
+    
+    <div class="mt-4">
+        <p>Please contact the administrator if you believe this is an error.</p>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Go to Home</a>
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="Logout" asp-controller="Auth" class="btn btn-secondary">Logout</a>
+        }
+        else
+        {
+            <a asp-action="Login" asp-controller="Auth" class="btn btn-secondary">Login</a>
+        }
+    </div>
+</div>
