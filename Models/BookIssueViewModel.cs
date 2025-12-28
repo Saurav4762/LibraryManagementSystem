@@ -22,6 +22,9 @@ public class BookIssueViewModel
 
     public decimal FineAmount { get; set; } = 0;
     
+    public bool IsFinePaid { get; set; } = false;
+
+    
     //Navigation 
     /*public virtual BookViewModel Bookvm { get; set; } = null!;
     public virtual StudentVm StudentVm { get; set; } = null!;*/

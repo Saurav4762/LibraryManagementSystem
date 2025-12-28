@@ -169,7 +169,7 @@ namespace Practice_Project.Controllers
                         BookId = vm.BookId,
                         StudentId = vm.StudentId,
                         IssueDate = DateTime.UtcNow,
-                        DueDate = DateTime.UtcNow.AddDays(14),
+                        DueDate = DateTime.UtcNow.AddDays(1),
                         Status = "Issued",
                         FineAmount = 0
                     };
@@ -205,7 +205,7 @@ namespace Practice_Project.Controllers
             return View(issue);
         }
 
-        // POST Return - Return book + Increase stock + Calculate fine
+        /*// POST Return - Return book + Increase stock + Calculate fine
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Return(int id, BookIssue model)
@@ -242,6 +242,43 @@ namespace Practice_Project.Controllers
 
             await _context.SaveChangesAsync();
 
+            TempData["Success"] = "Book returned successfully!";
+            return RedirectToAction(nameof(Index));
+        }*/
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Return(int id, BookIssue model)
+        {
+            var issue = await _context.BookIssues
+                .Include(bi => bi.Book)
+                .FirstOrDefaultAsync(bi => bi.Id == id);
+
+            if (issue == null) return NotFound();
+            if (issue.Status == "Returned") { /* already returned */ }
+
+            var returnDate = DateTime.UtcNow;
+            decimal fine = 0m;
+            int overdueDays = (returnDate.Date - issue.DueDate.Date).Days;
+            if (overdueDays > 0)
+                fine = overdueDays * 5.00m;
+
+            // If there is a fine, show it and ask for confirmation/payment
+            if (fine > 0)
+            {
+                ViewBag.CalculatedFine = fine;
+                ViewBag.OverdueDays = overdueDays;
+                // Return the same view with message: "Fine of ₹X must be collected"
+                return View(issue);  // or a special "ConfirmFine" view
+            }
+
+            // Only if no fine → return immediately
+            issue.ReturnDate = returnDate;
+            issue.Status = "Returned";
+            issue.FineAmount = fine;  // 0 in this case
+            issue.Book.QuantityAvailable += 1;
+
+            await _context.SaveChangesAsync();
             TempData["Success"] = "Book returned successfully!";
             return RedirectToAction(nameof(Index));
         }

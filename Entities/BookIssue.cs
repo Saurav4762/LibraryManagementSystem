@@ -20,6 +20,8 @@ namespace Practice_Project.Entities
 
         public string Status { get; set; } = "Issued";
         public decimal FineAmount { get; set; } = 0;
+        
+        public bool IsFinePaid { get; set; } = false;
 
         public virtual Book Book { get; set; } = null!;
         public virtual Student Student { get; set; } = null!;
