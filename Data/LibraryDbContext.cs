@@ -11,6 +11,7 @@ public class LibraryDbContext : DbContext
     }
 
     // Correct: Only Entities here!
+    public DbSet<User> Users { get; set; }
     public DbSet<Book> Books { get; set; } = null!;
     public DbSet<Author> Authors { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
@@ -27,6 +28,15 @@ public class LibraryDbContext : DbContext
             .HasForeignKey(bi => bi.BookId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // === User ===
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Email).IsUnique();
+            entity.Property(u => u.Email).HasMaxLength(256).IsRequired();
+            entity.Property(u => u.Password).IsRequired();
+            entity.Property(u => u.Role).HasMaxLength(50).IsRequired();
+        });
+        
         modelBuilder.Entity<BookIssue>()
             .HasOne(bi => bi.Student)
             .WithMany(s => s.BookIssues)

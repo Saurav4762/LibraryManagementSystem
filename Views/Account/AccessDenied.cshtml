@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger shadow-lg p-5">
+                <h1 class="display-4 text-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Access Denied
+                </h1>
+                <p class="lead mt-4">
+                    You do not have permission to access this page.
+                </p>
+                <hr />
+                <p>
+                    If you believe this is an error, please contact the administrator.
+                </p>
+
+                <div class="mt-4">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-primary btn-lg me-3">
+                        Go to Home
+                    </a>
+                    <a asp-action="Logout" asp-controller="Account" class="btn btn-outline-secondary btn-lg">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

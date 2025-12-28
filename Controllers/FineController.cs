@@ -40,7 +40,7 @@ namespace Practice_Project.Controllers
                 .Include(bi => bi.Student)
                 .Where(bi => bi.Status == "Returned" && bi.FineAmount > 0)
                 .ToList();
-
+                
             return View();
         }
 
