@@ -1,5 +1,21 @@
-﻿@using System.Security.Claims
+﻿@using System.Globalization
+@using System.Security.Claims
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    // Current time in Nepal (Asia/Kathmandu)
+    var nepalTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Nepal Standard Time");
+    var currentNepalTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, nepalTimeZone);
+    var formattedTime = currentNepalTime.ToString("dddd, MMMM dd, yyyy ", CultureInfo.InvariantCulture);
+
+    // User info for profile
+    var userName = User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.Name)?.Value != null
+        ? User.FindFirst(ClaimTypes.Name).Value
+        : "User";
+    var firstName = userName.Split(' ').FirstOrDefault() ?? "User";
+    var firstLetter = string.IsNullOrEmpty(userName) ? "U" : userName.First().ToString().ToUpper();
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,8 +112,8 @@
             align-items: center;
             color: #333;
             text-decoration: none;
-            padding: 15px 20px;
-            margin: 10px 0;
+            padding: 10px 15px;
+            margin: 5px 0;
             width: 80%;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -118,18 +134,18 @@
 
         .content {
             flex: 1;
-            padding: 40px 20px;
+            padding: 20px 10px;
             overflow-y: auto;
             width: 100%;
         }
 
         .main-content {
             background: rgba(255, 255, 255, 0.82);
-            padding: 40px;
+            padding: 10px;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            border-radius: 12px;
+            border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
@@ -152,6 +168,13 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .search-box{
+            font-size: 20px;
+            border: solid 0.3em #000000;
+            display: inline-block;
+            position: relative;
+            border-radius: 2.5em;
+        }
     </style>
 </head>
 <body>
@@ -159,6 +182,28 @@
 <div class="top">
     <div class="logo">Library Management System</div>
    
+    @*<div class="flex-grow-1" style="max-width: 350px;">
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+               class="form-control" placeholder="Search by Student Name" />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>*@
+    
+    <div class="top-center">
+        @*🕒*@ @formattedTime
+    </div>
+    
+    @*<!-- Right: Profile Section -->
+    <div class="profile-section">
+        <div class="profile-info">
+            <div class="profile-greeting">Hello,</div>
+            <div class="profile-name">@firstName</div>
+        </div>
+        <div class="profile-avatar">
+            @firstLetter
+        </div>
+    </div>*@
 </div>
 
 <div class="main-container">
@@ -200,10 +245,10 @@
             <span class="icon">💰</span> Fine
         </a>
         
+        
         <a asp-controller="Account" asp-action="Logout"
            class="@(Context.Request.Path.StartsWithSegments("/Auth/Logout") ? "active" : "")">
-        <span class="icon"></span> Logout
-        </a>
+            <span class="icon">⬅️</span>Logout</a>
         @if (User.IsInRole("Admin"))
         {
             <a asp-controller="Auth" asp-action="Register"

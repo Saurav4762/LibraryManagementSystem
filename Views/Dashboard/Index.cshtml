@@ -7,7 +7,7 @@
 <div class="container-fluid mt-4">
     <!-- Welcome Section -->
     <div class="row justify-content-center mb-4">
-        <div class="col-12 text-center">
+        <div class="col-110 text-center">
             <h1 class="display-4 text-primary">Welcome to Our Library Dashboard</h1>
    
         </div>
@@ -22,7 +22,7 @@
                     <i class="bi bi-people-fill text-info" style="font-size: 3rem;"></i>
                     <h5 class="card-title mt-3">Total Students</h5>
                     <h2 class="text-info">@Model.TotalStudents</h2>
-                    <p class="card-text">Registered library members ready to explore.</p>
+                    <p class="card-text">Registered Students ready to explore.</p>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <i class="bi bi-book-fill text-success" style="font-size: 3rem;"></i>
                     <h5 class="card-title mt-3">Total Books</h5>
                     <h2 class="text-success">@Model.TotalBooks</h2>
-                    <p class="card-text">Books in our collection, waiting to be discovered.</p>
+                    <p class="card-text">Books in our collection.</p>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
                     <i class="bi bi-tags-fill text-secondary" style="font-size: 3rem;"></i>
                     <h5 class="card-title mt-3">Total Categories</h5>
                     <h2 class="text-secondary">@Model.TotalCategories</h2>
-                    <p class="card-text">Genres to help you find your next read.</p>
+                    <p class="card-text">Help you find your next read.</p>
                 </div>
             </div>
         </div>
@@ -84,9 +84,9 @@
                 <div class="card-body text-center">
                     <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
                     <h5 class="card-title mt-3">Overdue & Fines</h5>
-                    <h2 class="text-danger">@Model.OverdueCount</h2>
-                    <p class="card-text">Total Pending Fine: @Model.TotalPendingFine</p>
-                    <small class="text-muted">Stay on top of returns to avoid fees!</small>
+                    <h2 class="text-danger">@Model.TotalPendingFine</h2>
+                    <p class="card-text">Total Pending Fine</p>
+                    
                 </div>
             </div>
         </div>

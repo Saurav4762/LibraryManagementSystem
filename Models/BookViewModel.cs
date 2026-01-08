@@ -18,7 +18,7 @@ namespace Practice_Project.Models
         public string ISBN { get; set; } = string.Empty;
 
         [Required]
-        [Range(1450, 2100)]
+        [Range(1990, 2025)]
         public int PublicationYear { get; set; }
 
         [Required]

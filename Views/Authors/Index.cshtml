@@ -2,9 +2,13 @@
 @{
     ViewData["Title"] = "Authors";
 }
-
+<div class="container mt-4">
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-primary fw-bold">Authors Management</h2>
+    <h2 class="text-success fw-bold">Authors Management</h2>
+    <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
     <a asp-action="Create" class="btn btn-success btn-lg">
         Add New Authors
     </a>
@@ -15,9 +19,9 @@
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-        <tr>
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+        <tr >
             <th>Name</th>
             <th>Biography</th>
             <th>Actions</th>
@@ -38,3 +42,4 @@ else
         </tbody>
     </table>
 }
+</div>

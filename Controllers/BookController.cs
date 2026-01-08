@@ -97,7 +97,7 @@ public async Task<IActionResult> Edit(int id, BookViewModel model)
 {
     if (id != model.BookId) return NotFound();
 
-    // Custom business rule
+   
     if (model.QuantityAvailable > model.TotalQuantity)
         ModelState.AddModelError("QuantityAvailable", "Available copies cannot exceed total copies.");
 
@@ -106,7 +106,7 @@ public async Task<IActionResult> Edit(int id, BookViewModel model)
         var book = await _context.Books.FindAsync(id);
         if (book == null) return NotFound();
 
-        // Update all fields
+      
         book.Title = model.Title;
         book.ISBN = model.ISBN;
         book.PublicationYear = model.PublicationYear;
@@ -123,12 +123,12 @@ public async Task<IActionResult> Edit(int id, BookViewModel model)
         return RedirectToAction(nameof(Index));
     }
 
-    // IMPORTANT: Reload dropdowns when validation fails
+   
     await LoadDropdownsAsync(model);
     return View(model);
 }
 
-// NEW: Clean helper that populates the ViewModel directly
+
 private async Task LoadDropdownsAsync(BookViewModel model)
 {
     model.Authors = await _context.Authors

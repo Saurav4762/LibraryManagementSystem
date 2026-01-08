@@ -18,7 +18,7 @@ namespace Practice_Project.Models
         
         public int AvailableBookList { get; set; }
         public int OverdueCount { get; set; }
-        public string TotalPendingFine { get; set; } = "$0.00";
+        public string TotalPendingFine { get; set; } = "₹0.00";
 
         public List<BookIssue> OverdueBooks { get; set; } = new List<BookIssue>();
     }
