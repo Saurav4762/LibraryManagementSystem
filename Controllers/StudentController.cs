@@ -13,13 +13,22 @@ public class StudentController : Controller
 
     public StudentController(LibraryDbContext context) => _context = context;
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString)
     {
-        var students = await _context.Students
-            .OrderBy(s => s.Name)
-            .ToListAsync();
-        return View(students);
+        var students = _context.Students.AsQueryable();
+
+        // Search by Name
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            students = students
+                .Where(s => s.Name.Contains(searchString));
+        }
+
+        students = students.OrderBy(s => s.Name);
+
+        return View(await students.ToListAsync());
     }
+
   
 
     public async Task<IActionResult> Create()

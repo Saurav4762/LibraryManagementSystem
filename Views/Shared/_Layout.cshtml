@@ -11,8 +11,8 @@
     // User info for profile
     var userName = User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.Name)?.Value != null
         ? User.FindFirst(ClaimTypes.Name).Value
-        : "User";
-    var firstName = userName.Split(' ').FirstOrDefault() ?? "User";
+        : "Admin";
+    var firstName = userName.Split(' ').FirstOrDefault() ?? "Admin";
     var firstLetter = string.IsNullOrEmpty(userName) ? "U" : userName.First().ToString().ToUpper();
 }
 

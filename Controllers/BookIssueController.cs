@@ -18,16 +18,25 @@ namespace Practice_Project.Controllers
         }
 
         // GET: /BookIssue/
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var issues = await _context.BookIssues
+            var issues = _context.BookIssues
                 .Include(bi => bi.Book)
-                .Include(bi => bi.Fines)  // ← ADD THIS LINE
+                .Include(bi => bi.Fines)
                 .Include(bi => bi.Student)
-                .ToListAsync();
+                .AsQueryable();
 
-            return View(issues);
+            // 🔍 Search by Student Name OR Book Title
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                issues = issues.Where(bi =>
+                    bi.Student.Name.Contains(searchString) ||
+                    bi.Book.Title.Contains(searchString));
+            }
+
+            return View(await issues.ToListAsync());
         }
+
 
         // GET: /BookIssue/Create
         public IActionResult Create()
