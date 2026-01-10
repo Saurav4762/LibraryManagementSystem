@@ -4256,19 +4256,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sujan\\.nuget\\packages\\": {}
+    "C:\\Users\\upret\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\BCA 4YEAR COURSE\\4TH\\10x software development course (15000)\\Practice_Project\\Practice_Project\\Practice_Project.csproj",
+      "projectUniqueName": "D:\\4th sem documents\\projectLMS\\4th-sem-project-LMS-\\Practice_Project.csproj",
       "projectName": "Practice_Project",
-      "projectPath": "G:\\BCA 4YEAR COURSE\\4TH\\10x software development course (15000)\\Practice_Project\\Practice_Project\\Practice_Project.csproj",
-      "packagesPath": "C:\\Users\\Sujan\\.nuget\\packages\\",
-      "outputPath": "G:\\BCA 4YEAR COURSE\\4TH\\10x software development course (15000)\\Practice_Project\\Practice_Project\\obj\\",
+      "projectPath": "D:\\4th sem documents\\projectLMS\\4th-sem-project-LMS-\\Practice_Project.csproj",
+      "packagesPath": "C:\\Users\\upret\\.nuget\\packages\\",
+      "outputPath": "D:\\4th sem documents\\projectLMS\\4th-sem-project-LMS-\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Sujan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\upret\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4293,7 +4298,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -4351,7 +4357,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

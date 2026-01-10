@@ -12,8 +12,8 @@ using Practice_Project.Data;
 namespace Practice_Project.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20260121045230_MakeRollNumberAtuoIncrement")]
-    partial class MakeRollNumberAtuoIncrement
+    [Migration("20260110034632_initacreate")]
+    partial class initacreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
