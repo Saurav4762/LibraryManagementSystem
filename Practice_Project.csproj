@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.22" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,6 +40,14 @@
       <_ContentIncludedByDefault Remove="Views\Fine\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Fine\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Fine\Pay.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\kghkjhgkjhg\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\kghkjhgkjhg\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\Details1.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\Index1.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\MainIndex.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fines\ShowDetails.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

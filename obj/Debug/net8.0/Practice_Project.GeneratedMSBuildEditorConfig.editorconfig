@@ -102,24 +102,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Fines/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZXNcQ3JlYXRlLmNzaHRtbA==
+[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/FinePay/MainIndex.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZVBheVxNYWluSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Fines/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZXNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Fines/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZXNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Fines/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZXNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Fines/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZXNcSW5kZXguY3NodG1s
+[G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/FinePay/ShowDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluZVBheVxTaG93RGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [G:/BCA 4YEAR COURSE/4TH/10x software development course (15000)/Practice_Project/Practice_Project/Views/Home/Index.cshtml]

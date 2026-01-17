@@ -4,38 +4,45 @@
     ViewData["Title"] = "Return Book";
 }
 
-<h2>Return Book</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Return Book</h2>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Book.Title</h5>
-        <p><strong>Student:</strong> @Model.Student.Name</p>
-        <p><strong>Issue Date:</strong> @Model.IssueDate.ToString("dd-MM-yyyy")</p>
-        <p><strong>Due Date:</strong> @Model.DueDate.ToString("dd-MM-yyyy")</p>
-        <p><strong>Today (Return Date):</strong> @DateTime.Now.ToString("dd-MM-yyyy")</p>
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h5>Book & Student Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Book Title</dt>
+                <dd class="col-sm-9"><strong>@Model.Book.Title</strong></dd>
 
-        @{ 
-            var overdueDays = (DateTime.Now - Model.DueDate).Days;
-            var fine = overdueDays > 0 ? overdueDays * 1.00m : 0m;
-        }
+                <dt class="col-sm-3">Author</dt>
+                <dd class="col-sm-9">@Model.Book.Author</dd>
 
-        @if (overdueDays > 0)
-        {
-            <p class="text-danger">
-                <strong>Overdue by @overdueDays days → Fine: @fine.ToString("C")</strong>
-            </p>
-        }
-        else
-        {
-            <p class="text-success"><strong>No fine - returned on time!</strong></p>
-        }
+                <dt class="col-sm-3">Student</dt>
+                <dd class="col-sm-9">@Model.Student.Name</dd>
+
+                <dt class="col-sm-3">Issue Date</dt>
+                <dd class="col-sm-9">@Model.IssueDate:dd MMM yyyy</dd>
+
+                <dt class="col-sm-3">Due Date</dt>
+                <dd class="col-sm-9">@Model.DueDate:dd MMM yyyy</dd>
+
+                <dt class="col-sm-3">Today's Date</dt>
+                <dd class="col-sm-9">@DateTime.UtcNow:dd MMM yyyy</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <form asp-action="Return" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success btn-lg">
+                Proceed to Return
+            </button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg ms-3">
+                Cancel
+            </a>
+        </form>
     </div>
 </div>
-
-<br />
-
-<form asp-action="Return" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-success">Confirm Return</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
