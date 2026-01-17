@@ -1,0 +1,67 @@
+@model IEnumerable<Practice_Project.Entities.Fine>
+
+@{
+    ViewData["Title"] = "Paid Fines";
+}
+
+<h2 class="mb-4 text-primary">Paid Fine Records</h2>
+
+<div class="mb-3">
+    <form asp-action="Index" method="get" class="row g-2">
+        <div class="col-auto">
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                   class="form-control" placeholder="Search by Student Name">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-auto">
+            <a asp-action="Index" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student</th>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Fine Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">
+                        No paid fines found.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var fine in Model)
+                {
+                    <tr>
+                        <td>@fine.Student?.Name</td>
+                        <td>@fine.BookIssue?.Book?.Title</td>
+                        <td>@fine.BookIssue?.IssueDate.ToString("dd MMM yyyy")</td>
+                        <td>@fine.BookIssue?.DueDate.ToString("dd MMM yyyy")</td>
+                        <td>@(fine.BookIssue?.ReturnDate.HasValue == true ? fine.BookIssue.ReturnDate.Value.ToString("dd MMM yyyy") : "-")</td>
+                        <td>Rs. @fine.Amount</td>
+                        <td>
+                            <span class="badge bg-success">Paid</span>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

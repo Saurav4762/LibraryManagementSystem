@@ -48,6 +48,8 @@
       <_ContentIncludedByDefault Remove="Views\Fines\Index1.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Fines\MainIndex.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Fines\ShowDetails.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\FinePay\MainIndex.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\FinePay\ShowDetails.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
