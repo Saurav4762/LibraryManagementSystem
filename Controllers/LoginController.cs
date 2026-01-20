@@ -120,7 +120,7 @@ namespace Practice_Project.Controllers
 
             TempData["SuccessMessage"] = $"New {user.Role} ({user.Email}) registered successfully!";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Register", "Account");
         }
 
         // GET: /Account/Logout
@@ -128,7 +128,7 @@ namespace Practice_Project.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Account");
         }
 
         // Access Denied Page

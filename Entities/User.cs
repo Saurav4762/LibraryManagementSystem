@@ -7,6 +7,7 @@ namespace Practice_Project.Entities
     {
         [Key]
         public int Id { get; set; }
+        
 
         [Required]
         [EmailAddress]

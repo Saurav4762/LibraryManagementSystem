@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml"; <!-- Adjust if you have a different layout -->
+   // Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-5">
@@ -30,14 +30,35 @@
                             <input type="password" name="password" class="form-control" required />
                         </div>
 
-                        <div class="d-grid">
+                        <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary btn-lg">Login</button>
                         </div>
                     </form>
 
+                    <!-- Registration Button Section -->
+                    <div class="text-center mt-4">
+                        <p class="mb-3">Don't have an account?</p>
+                        <!-- Option 1: Button -->
+                        <a asp-action="Register" asp-controller="Account" class="btn btn-success btn-lg">
+                            <i class="bi bi-person-plus"></i> Create New Account
+                        </a>
+                        
+                        <!-- Option 2: Link (if you prefer a link instead) -->
+                        <!-- <div class="mt-2">
+                            <a asp-action="Register" asp-controller="Account" class="btn btn-link">Register as new user</a>
+                        </div> -->
+                    </div>
+
                 </div>
                 <div class="card-footer text-center text-muted">
-                    Only for Librarians and Admins
+                    <div class="row">
+                        <div class="col">
+                            <a asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none">Forgot Password?</a>
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" asp-controller="Home" class="text-decoration-none">Back to Home</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
