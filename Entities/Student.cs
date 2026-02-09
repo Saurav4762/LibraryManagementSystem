@@ -28,5 +28,7 @@ namespace Practice_Project.Entities
 
         // One student → many book issues (already perfect)
         public virtual ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();
+        
+        public ICollection<Fine> Fines { get; set; } = new List<Fine>();
     }
 }

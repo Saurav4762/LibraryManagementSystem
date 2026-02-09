@@ -1,24 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Practice_Project.Data; // Replace with your actual DbContext namespace
 using Practice_Project.Entities;
-using Practice_Project.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Practice_Project.Data;
 
 namespace Practice_Project.Controllers
 {
-    public class FineController : Controller
+    public class FinesController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly LibraryDbContext _context; // Change to your actual DbContext name
 
-        public FineController(LibraryDbContext context)
+        public FinesController(LibraryDbContext context)
         {
             _context = context;
         }
 
-        // GET: /Fine/ - List all fines
+        // GET: Fines - List all fines with related data
         public async Task<IActionResult> Index()
         {
             var fines = await _context.Fines
@@ -26,83 +22,156 @@ namespace Practice_Project.Controllers
                     .ThenInclude(bi => bi.Book)
                 .Include(f => f.BookIssue)
                     .ThenInclude(bi => bi.Student)
-                .OrderByDescending(f => f.GeneratedDate)
+                .Include(f => f.Student)
+                .OrderByDescending(f => f.CalculatedOn)
                 .ToListAsync();
 
             return View(fines);
         }
 
-        // GET: /Fine/Create - Show form (optional manual fine)
+        // GET: Fines/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var fine = await _context.Fines
+                .Include(f => f.BookIssue).ThenInclude(bi => bi.Book)
+                .Include(f => f.BookIssue).ThenInclude(bi => bi.Student)
+                .Include(f => f.Student)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (fine == null) return NotFound();
+
+            return View(fine);
+        }
+
+        // GET: Fines/Create
         public IActionResult Create()
         {
             ViewBag.BookIssues = _context.BookIssues
                 .Include(bi => bi.Book)
                 .Include(bi => bi.Student)
-                .Where(bi => bi.Status == "Returned" && bi.FineAmount > 0)
+                .Where(bi => bi.ReturnDate == null || bi.ReturnDate > bi.DueDate) // Only overdue or issued
+                .Select(bi => new
+                {
+                    bi.Id,
+                    DisplayText = $"Book: {bi.Book.Title} - Student: {bi.Student.Name} (Due: {bi.DueDate:yyyy-MM-dd})"
+                })
                 .ToList();
-                
+
+            ViewBag.Students = _context.Students.ToList();
             return View();
         }
 
-        // POST: /Fine/Create - Manual fine creation
+        // POST: Fines/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Fine fine)
         {
             if (ModelState.IsValid)
             {
-                fine.GeneratedDate = DateTime.UtcNow;
-                _context.Fines.Add(fine);
+                fine.CalculatedOn = DateTime.UtcNow;
+                _context.Add(fine);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.BookIssues = _context.BookIssues.ToList();
+            // Repopulate dropdowns if validation fails
+            ViewBag.BookIssues = _context.BookIssues.Include(bi => bi.Book).Include(bi => bi.Student).ToList();
+            ViewBag.Students = _context.Students.ToList();
             return View(fine);
         }
 
-        // GET: /Fine/Pay/5 - Mark fine as paid
-        public async Task<IActionResult> Pay(int id)
+        // GET: Fines/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            var fine = await _context.Fines
-                .Include(f => f.BookIssue)
-                .FirstOrDefaultAsync(f => f.BookIssueId == id);
+            if (id == null) return NotFound();
 
-            if (fine == null || fine.IsPaid)
-                return NotFound();
+            var fine = await _context.Fines.FindAsync(id);
+            if (fine == null) return NotFound();
 
+            ViewBag.BookIssues = _context.BookIssues.Include(bi => bi.Book).Include(bi => bi.Student).ToList();
+            ViewBag.Students = _context.Students.ToList();
             return View(fine);
         }
 
-        // POST: /Fine/Pay/5 - Confirm payment
+        // POST: Fines/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Pay(int id, Fine model)
+        public async Task<IActionResult> Edit(int id, Fine fine)
+        {
+            if (id != fine.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (fine.IsPaid && fine.PaidOn == null)
+                        fine.PaidOn = DateTime.UtcNow;
+
+                    _context.Update(fine);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FineExists(fine.Id)) return NotFound();
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.BookIssues = _context.BookIssues.Include(bi => bi.Book).Include(bi => bi.Student).ToList();
+            ViewBag.Students = _context.Students.ToList();
+            return View(fine);
+        }
+
+        // GET: Fines/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var fine = await _context.Fines
+                .Include(f => f.BookIssue).ThenInclude(bi => bi.Book)
+                .Include(f => f.BookIssue).ThenInclude(bi => bi.Student)
+                .Include(f => f.Student)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (fine == null) return NotFound();
+
+            return View(fine);
+        }
+
+        // POST: Fines/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var fine = await _context.Fines.FindAsync(id);
-            if (fine == null)
-                return NotFound();
-
-            fine.IsPaid = true;
-            fine.PaidDate = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            TempData["Success"] = "Fine paid successfully!";
+            if (fine != null)
+            {
+                _context.Fines.Remove(fine);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        // Optional: Delete fine
-        public async Task<IActionResult> Delete(int id)
+        // Action to mark fine as paid (bonus shortcut)
+        public async Task<IActionResult> MarkAsPaid(int id, string paidBy = "Admin")
         {
             var fine = await _context.Fines.FindAsync(id);
-            if (fine == null)
-                return NotFound();
+            if (fine == null) return NotFound();
 
-            _context.Fines.Remove(fine);
+            fine.IsPaid = true;
+            fine.PaidOn = DateTime.UtcNow;
+            fine.PaidBy = paidBy;
+
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool FineExists(int id)
+        {
+            return _context.Fines.Any(e => e.Id == id);
         }
     }
 }

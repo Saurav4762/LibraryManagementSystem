@@ -24,6 +24,8 @@ namespace Practice_Project.Entities
         public bool IsFinePaid { get; set; } = false;
 
         public virtual Book Book { get; set; } = null!;
+        // In Entities/BookIssue.cs
+        public ICollection<Fine> Fines { get; set; } = new List<Fine>();
         public virtual Student Student { get; set; } = null!;
     }
 }

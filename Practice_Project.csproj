@@ -37,6 +37,8 @@
       <_ContentIncludedByDefault Remove="Views\BookViewModel\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Views\BookViewModel\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Fine\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fine\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Fine\Pay.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

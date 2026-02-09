@@ -15,7 +15,7 @@ public class FineVm
 
     public DateTime? PaidDate { get; set; }
 
-    public bool IsPaid { get; set; } = false;
+    public bool IsPaid { get; set; } = true;
 
     // Navigation
     public virtual BookIssueViewModel BookIssueViewModel { get; set; } = null!;

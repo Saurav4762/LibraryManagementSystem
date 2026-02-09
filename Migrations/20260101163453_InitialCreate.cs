@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Practice_Project.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -146,10 +146,13 @@ namespace Practice_Project.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BookIssueId = table.Column<int>(type: "integer", nullable: false),
+                    StudentId = table.Column<int>(type: "integer", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
-                    GeneratedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PaidDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsPaid = table.Column<bool>(type: "boolean", nullable: false)
+                    CalculatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsPaid = table.Column<bool>(type: "boolean", nullable: false),
+                    PaidOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    PaidBy = table.Column<string>(type: "text", nullable: true),
+                    BookIssueId1 = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,6 +161,17 @@ namespace Practice_Project.Migrations
                         name: "FK_Fines_BookIssues_BookIssueId",
                         column: x => x.BookIssueId,
                         principalTable: "BookIssues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Fines_BookIssues_BookIssueId1",
+                        column: x => x.BookIssueId1,
+                        principalTable: "BookIssues",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Fines_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -186,6 +200,16 @@ namespace Practice_Project.Migrations
                 name: "IX_Fines_BookIssueId",
                 table: "Fines",
                 column: "BookIssueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fines_BookIssueId1",
+                table: "Fines",
+                column: "BookIssueId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fines_StudentId",
+                table: "Fines",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

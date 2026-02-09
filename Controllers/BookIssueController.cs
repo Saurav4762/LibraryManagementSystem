@@ -246,7 +246,11 @@ namespace Practice_Project.Controllers
             return RedirectToAction(nameof(Index));
         }*/
         
-        [HttpPost]
+        
+        //   ADDING THE FINE PAGE IN SAME BOOKISSUE SO COMMENT ON IT 
+        
+        
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Return(int id, BookIssue model)
         {
@@ -255,7 +259,7 @@ namespace Practice_Project.Controllers
                 .FirstOrDefaultAsync(bi => bi.Id == id);
 
             if (issue == null) return NotFound();
-            if (issue.Status == "Returned") { /* already returned */ }
+            if (issue.Status == "Returned") { /* already returned #1# }
 
             var returnDate = DateTime.UtcNow;
             decimal fine = 0m;
@@ -281,6 +285,87 @@ namespace Practice_Project.Controllers
             await _context.SaveChangesAsync();
             TempData["Success"] = "Book returned successfully!";
             return RedirectToAction(nameof(Index));
+        }*/
+        
+        // POST: /BookIssue/Return/5 - Confirm Return
+// POST: /BookIssue/Return/5
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Return(int id, string action = null)
+{
+    var issue = await _context.BookIssues
+        .Include(bi => bi.Book)
+        .Include(bi => bi.Student)
+        .FirstOrDefaultAsync(bi => bi.Id == id);
+
+    if (issue == null)
+        return NotFound();
+
+    if (issue.Status == "Returned")
+    {
+        TempData["Info"] = "This book has already been returned.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    var returnDate = DateTime.UtcNow;
+    int overdueDays = Math.Max(0, (returnDate.Date - issue.DueDate.Date).Days);
+    decimal fineAmount = overdueDays * 5.00m; // ₹5 per day
+
+    // Step 1: If user CONFIRMED the return (clicked the button on ReturnConfirm.cshtml)
+    if (action == "confirm")
+    {
+        issue.IsFinePaid = true;
+        issue.ReturnDate = returnDate;
+        issue.Status = "Returned";
+        issue.FineAmount = fineAmount;
+
+        // Increase book stock
+        issue.Book.QuantityAvailable += 1;
+
+        // If fine exists, create record in Fines table
+        if (fineAmount > 0)
+        {
+            var fine = new Fine
+            {
+                
+                BookIssueId = issue.Id,
+                StudentId = issue.StudentId,
+                Amount = fineAmount,
+                CalculatedOn = DateTime.UtcNow,
+                IsPaid = true
+            };
+            _context.Fines.Add(fine);
         }
+
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = fineAmount > 0
+            ? $"Book returned. Fine of ₹{fineAmount} applied ({overdueDays} days overdue)."
+            : "Book returned successfully with no fine.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // Step 2: If there is a fine AND no confirmation yet → show confirmation page
+    if (fineAmount > 0)
+    {
+        ViewBag.CalculatedFine = fineAmount;
+        ViewBag.OverdueDays = overdueDays;
+        ViewBag.Issue = issue;
+
+        return View("ReturnConfirm", issue); // This will now ONLY show when needed
+    }
+
+    // Step 3: No fine → return immediately
+    issue.ReturnDate = returnDate;
+    issue.Status = "Returned";
+    issue.FineAmount = 0;
+    issue.Book.QuantityAvailable += 1;
+
+    await _context.SaveChangesAsync();
+
+    TempData["Success"] = "Book returned successfully!";
+    return RedirectToAction(nameof(Index));
+}
     }
 }

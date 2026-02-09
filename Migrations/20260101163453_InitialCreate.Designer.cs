@@ -12,8 +12,8 @@ using Practice_Project.Data;
 namespace Practice_Project.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20251228171645_new")]
-    partial class @new
+    [Migration("20260101163453_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,18 +171,31 @@ namespace Practice_Project.Migrations
                     b.Property<int>("BookIssueId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("GeneratedDate")
+                    b.Property<int?>("BookIssueId1")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CalculatedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsPaid")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("PaidDate")
+                    b.Property<string>("PaidBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("PaidOn")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookIssueId");
+
+                    b.HasIndex("BookIssueId1");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Fines");
                 });
@@ -303,7 +316,19 @@ namespace Practice_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Practice_Project.Entities.BookIssue", null)
+                        .WithMany("Fines")
+                        .HasForeignKey("BookIssueId1");
+
+                    b.HasOne("Practice_Project.Entities.Student", "Student")
+                        .WithMany("Fines")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("BookIssue");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Practice_Project.Entities.Author", b =>
@@ -316,6 +341,11 @@ namespace Practice_Project.Migrations
                     b.Navigation("BookIssues");
                 });
 
+            modelBuilder.Entity("Practice_Project.Entities.BookIssue", b =>
+                {
+                    b.Navigation("Fines");
+                });
+
             modelBuilder.Entity("Practice_Project.Entities.Category", b =>
                 {
                     b.Navigation("Books");
@@ -324,6 +354,8 @@ namespace Practice_Project.Migrations
             modelBuilder.Entity("Practice_Project.Entities.Student", b =>
                 {
                     b.Navigation("BookIssues");
+
+                    b.Navigation("Fines");
                 });
 #pragma warning restore 612, 618
         }

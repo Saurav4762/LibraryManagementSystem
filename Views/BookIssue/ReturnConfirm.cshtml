@@ -1,0 +1,52 @@
+@model Practice_Project.Entities.BookIssue
+
+@{
+    ViewData["Title"] = "Confirm Book Return - Fine Applied";
+    decimal fine = ViewBag.CalculatedFine ?? 0m;
+    int overdueDays = ViewBag.OverdueDays ?? 0;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white text-center">
+                    <h3>⚠️ Overdue Book Return</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-danger mb-4">A fine will be applied!</h5>
+
+                    <div class="mb-3">
+                        <strong>Student:</strong> @Model.Student.Name<br />
+                        <strong>Book:</strong> @Model.Book.Title<br />
+                        <strong>Issue Date:</strong> @Model.IssueDate.ToString("dd MMM yyyy")<br />
+                        <strong>Due Date:</strong> <span class="text-danger">@Model.DueDate.ToString("dd MMM yyyy")</span><br />
+                        <strong>Return Date:</strong> @DateTime.UtcNow.ToString("dd MMM yyyy")
+                    </div>
+
+                    <div class="alert alert-warning text-center py-4">
+                        <h4>Overdue by @overdueDays day(s)</h4>
+                        <h2 class="text-danger mb-0">Fine: ₹@fine</h2>
+                    </div>
+
+                    <p class="text-muted">
+                        This fine will be recorded and can be managed in the <strong>Fines</strong> section.
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <form asp-action="Return" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="action" value="confirm" />
+                        <button type="submit" class="btn btn-success btn-lg px-5">
+                            Confirm Return & Apply Fine
+                        </button>
+                    </form>
+
+                    <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ms-3">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
